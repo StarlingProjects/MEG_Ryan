@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Jekyll v3.8.5">
+    <title>Single Prediction</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.2/css/mdb.min.css" rel="stylesheet">
+    <!-- JQuery -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- Bootstrap tooltips -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <!-- MDB core JavaScript -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.2/js/mdb.min.js"></script>
+    <script>
+        function clickSubmit(){
+            var data = $("#commentInput").val()
+            console.log(data)
+            $.ajax({
+                type:"POST",
+                data:{pressure:$("#pressureInput").val(),temp:$("#tempInput").val()},
+                //url:"http://0.0.0.0:5000/classify",
+                url:"http://localhost:5000/predictMEG",
+                success:function(data){
+                    var label = data.meg;
+                    console.log(label);
+                    predictionResults(label);
+
+                }
+            })
+        }
+
+        function predictionResults(label){
+            $("#predLabel").text(label);
+            
+
+        }
+
+          //$("#resultDiv").addClass("animated fadeOutUp faster");
+
+    </script>
+
+</head>
+<body >
+    <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm ">
+        <h5 class="my-0 mr-md-auto font-weight-normal"><a class="text-dark text-decoration-none" href="/">Activity Predictor</a></h5>
+    </div>
+    <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center animated fadeIn fast">
+        <h1 class="display-4">MEG Prediction</h1>
+        <p class="lead">Enter Pressure and Temperature Below</p>
+    </div>
+    <div class="container">
+        <div class="card-deck animated fadeIn slower">
+            <div id="modelCard" class="card border-primary">
+                <div class="card-img-top deep-blue-gradient">
+                    <p class="pt-md-4 pt-sm-2"></p>
+                    <h2 class="text-white text-center card-title"></h2>
+                </div>
+                <div class="card-body">
+                    <div class="row d-flex">
+                        <div class="col-md-4">
+                        <h5 id="inputTitle" class="card-title text-primary">Temperature<span class="doneSpan"></span></h5>
+                        <p class="card-text">Enter Temperature below:</p>
+                        <!--<input type="text" id="commentInput" class="form-control">-->
+
+                            <textarea id="tempInput" class="md-textarea form-control" rows="3"></textarea>
+
+
+                        <p class="pt-md-1 pt-sm-1"></p>
+
+                        
+                        </div>
+                        <div class="col-md-4">
+                        <h5 id="inputTitle" class="card-title text-primary">Pressure<span class="doneSpan"></span></h5>
+                        <p class="card-text">Enter Pressure below:</p>
+                        <!--<input type="text" id="commentInput" class="form-control">-->
+
+                            <textarea id="pressureInput" class="md-textarea form-control" rows="3"></textarea>
+
+
+                        <p class="pt-md-1 pt-sm-1"></p>
+
+                        <button class="btn btn-outline-primary" type="button" id="commentSubmit" onclick="clickSubmit()">
+                                Submit Readings
+                        </button>
+                        </div>
+
+                        <div class="col-md-3" id="resultDiv">
+                            <h5 id="resultTitle" class=" text-primary">MEG %<span class="doneSpan"></span></h5>
+                            <p class="pt-md-1 pt-sm-1"></p>
+                            <p class="pt-md-1 pt-sm-1"></p>
+                            <h6 class="text-muted">Label:   <strong><span id="predLabel"></span><span>%</span></strong></h6>
+                            <p class="pt-md-1 pt-sm-1"></p>
+                            <canvas id="pieCanvas"></canvas>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+
+</body>
+</html>
